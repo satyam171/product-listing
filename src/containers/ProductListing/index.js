@@ -34,7 +34,7 @@ import {
 } from './selectors';
 
 import {
-  Layout, Menu, Input, Select, Icon, Pagination
+  Layout, Menu, Input, Select, Icon
 } from 'antd';
 
 const { Header, Content, Sider, Footer } = Layout;
