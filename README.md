@@ -12,7 +12,7 @@ This project demonstrates how to build a product listing page commonly built out
 
 The core idea is to showcase how to maintain the state and keep it in sync with the url which provides an overview as to how the filters are implemented in majority of the E-Commerce websites.
 
-- Running the project locally 
+## Running the project locally 
 
 * git clone https://github.com/satyam171/product-listing.git
 * cd product-listing
