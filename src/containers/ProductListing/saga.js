@@ -42,7 +42,7 @@ function getQueryString(filterObj){
 export function* fetchProducts(action) {
   
   const {parsedQuery, newUrlQuery} = getQueryString(action.searchObj); 
-  const requestURL = `http://localhost:8000/products?${parsedQuery}`;
+  const requestURL = `https://json-fake-server.herokuapp.com/products?${parsedQuery}`;
 
   try {
     // push the new url here
