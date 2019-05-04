@@ -4,15 +4,32 @@
  *
  */
 import produce from 'immer';
-import { DEFAULT_ACTION } from './constants';
+import { GET_PRODUCTS_SUCCESS, GET_PRODUCTS, GET_PRODUCTS_ERROR } from './constants';
 
-export const initialState = {};
+export const initialState = {
+  loading: false,
+  error: false,
+  products: []
+};
 
 /* eslint-disable default-case, no-param-reassign */
 const productListingReducer = (state = initialState, action) =>
-  produce(state, (/* draft */) => {
+  produce(state, draft => {
     switch (action.type) {
-      case DEFAULT_ACTION:
+      case GET_PRODUCTS:
+        draft.loading = true;
+        draft.error = false;
+        break;
+
+      case GET_PRODUCTS_SUCCESS:
+        draft.loading = false;
+        draft.products = action.products;
+        draft.error = false; 
+        break;
+
+      case GET_PRODUCTS_ERROR:
+        draft.loading = false;
+        draft.error = action.error;
         break;
     }
   });

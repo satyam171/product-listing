@@ -20,6 +20,24 @@ const makeSelectLocation = () =>
     routerState => routerState.location,
   );
 
+  const makeSelectLoading = () =>
+  createSelector(
+    selectProductListingDomain,
+    productsState => productsState.loading,
+  );
+
+const makeSelectError = () =>
+  createSelector(
+    selectProductListingDomain,
+    productsState => productsState.error,
+  );
+
+const makeSelectProducts = () =>
+  createSelector(
+    selectProductListingDomain,
+    productsState => productsState.products,
+  );  
+
 /**
  * Default selector used by ProductListing
  */
@@ -31,4 +49,10 @@ const makeSelectProductListing = () =>
   );
 
 export default makeSelectProductListing;
-export { selectProductListingDomain, makeSelectLocation };
+export { 
+  selectProductListingDomain,
+  makeSelectLocation,
+  makeSelectLoading,
+  makeSelectProducts, 
+  makeSelectError
+};

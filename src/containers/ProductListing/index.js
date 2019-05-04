@@ -20,7 +20,15 @@ import {colors} from '../../utils/colors';
 import {adjectives} from '../../utils/adjectives'; 
 import {materials} from '../../utils/materials'; 
 
-import makeSelectProductListing, {makeSelectLocation} from './selectors';
+// action imports
+import {searchProducts} from './actions'; 
+
+import {
+  makeSelectLocation, 
+  makeSelectLoading, 
+  makeSelectProducts, 
+  makeSelectError
+} from './selectors';
 
 import {
   Layout, Menu, Input, Select
@@ -53,9 +61,8 @@ class ProductListing extends Component{
     }
   }
 
-  handleSearch(e){
+  handleSearch(search){
     // make the request
-    let search = e.target.value; 
     let obj = {...this.state, search}; 
     this.makeRequest(obj); 
     // update the state here for the search
@@ -71,7 +78,7 @@ class ProductListing extends Component{
   }
 
   makeRequest(searchObj){
-    console.log(searchObj); 
+    this.props.dispatch(searchProducts(searchObj));  
   }
 
   render(){
@@ -82,9 +89,9 @@ class ProductListing extends Component{
           <div style={styles.Header}>Product Listing</div>
           <Search
             placeholder="input search text"
-            onSearch={value => console.log(value)}
+            onSearch={val => this.handleSearch(val)}
             onChange={(e) => this.setState({search : e.target.value})}
-            onPressEnter={this.handleSearch}
+            onPressEnter={e => this.handleSearch(e.target.value)}
             enterButton
             style={styles.Search}
           />
@@ -128,7 +135,9 @@ ProductListing.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  productListing: makeSelectProductListing(),
+  loading: makeSelectLoading(), 
+  products: makeSelectProducts(), 
+  error: makeSelectError(), 
   location: makeSelectLocation()
 });
 
