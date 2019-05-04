@@ -9,6 +9,8 @@ import { searchProductsSuccess, searchProductsError } from './actions';
 
 import request from '../../utils/request';
 
+import { push } from 'connected-react-router'
+
 /**
  * Products request/response handler
  */
@@ -23,23 +25,29 @@ const likeMapper = {
 
 function getQueryString(filterObj){
   let parsedQuery = {};
+  let newUrlQuery = {};
   // constructing the action query object from the one received from state 
   for (const key in filterObj) {
-    if (filterObj.hasOwnProperty(key)) {
       const element = filterObj[key];
-      if(element){ // checking if it's not ''
-        parsedQuery[likeMapper[key]] = element; 
+      if(element && element !== "None"){ // checking if it's not ''
+        parsedQuery[likeMapper[key]] = element;
+        newUrlQuery[key] = element; 
       }
-    }
   }
-  return queryString.stringify(parsedQuery); 
+  return {
+    parsedQuery : queryString.stringify(parsedQuery), 
+    newUrlQuery : queryString.stringify(newUrlQuery)
+  }
 }
 
 export function* fetchProducts(action) {
   
-  const requestURL = `http://localhost:8000/products?${getQueryString(action.searchObj)}`;
+  const {parsedQuery, newUrlQuery} = getQueryString(action.searchObj); 
+  const requestURL = `http://localhost:8000/products?${parsedQuery}`;
 
   try {
+    // push the new url here
+    yield put(push(`${action.location.pathname}?${newUrlQuery}`))
     // Call our request helper (see 'utils/request')
     const products = yield call(request, requestURL);
     yield put(searchProductsSuccess(products));

@@ -1,4 +1,5 @@
 export const colors = [
+    "None", 
     "plum",
     "green",
     "lime",

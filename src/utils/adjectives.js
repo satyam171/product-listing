@@ -1,4 +1,5 @@
 export const adjectives = [
+    "None", 
     "Refined",
     "Handcrafted",
     "Tasty",

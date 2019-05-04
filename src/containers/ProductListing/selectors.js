@@ -6,7 +6,7 @@ import { initialState } from './reducer';
  */
 
 const selectProductListingDomain = state =>
-  state.productListing || initialState;
+  state.productListingReducer || initialState;
 
 /**
  * Other specific selectors

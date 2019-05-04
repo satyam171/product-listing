@@ -10,12 +10,14 @@ import { GET_PRODUCTS, GET_PRODUCTS_SUCCESS, GET_PRODUCTS_ERROR } from './consta
  * Load the repositories, this action starts the request saga
  *
  * @param  {object} searchObj The search object that comes from the view
- *
+ * @param  {object} location The location object
+ * 
  * @return {object} An action object with a type of GET_PRODUCTS
  */
-export function searchProducts(searchObj) {
+export function searchProducts(location, searchObj) {
   return {
     type: GET_PRODUCTS,
+    location, 
     searchObj
   };
 }

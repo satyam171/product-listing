@@ -1,4 +1,5 @@
 export const materials = [
+    "None", 
     "Soft",
     "Frozen",
     "Plastic",

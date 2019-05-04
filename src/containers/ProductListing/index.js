@@ -12,6 +12,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+// components
+import Products from './Products'; 
+
 // custom styles
 import styles from './styles';
 
@@ -31,45 +34,38 @@ import {
 } from './selectors';
 
 import {
-  Layout, Menu, Input, Select
+  Layout, Menu, Input, Select, Icon, Pagination
 } from 'antd';
 
 const { Header, Content, Sider, Footer } = Layout;
 const { Search } = Input;
 const { Option } = Select;
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 class ProductListing extends Component{
 
   constructor(props){
     super(props);
     this.state = {
-      search : '', color : '', adjective : '', material : '', page : 0
+      search : '', color : '', adjective : '', material : '', page : 1
     }
-    this.handleSearch = this.handleSearch.bind(this); 
-    this.handleSelect = this.handleSelect.bind(this); 
+    this.handleFilter = this.handleFilter.bind(this);  
   }
 
   componentDidMount(){
     let parsed = queryString.parse(this.props.location.search);   
     // checking for empty object - ie - when no filters are applied
     if(!_.isEmpty(parsed)){ 
-      let {search, color, adjective, material, page} = parsed; 
+      // making the request here for fetching the required products according to the filter
+      this.makeRequest(parsed);  
       // updating the value according to the value stored in the url 
-      this.setState({
-        search, color, adjective, material, page
-      })
+      for (const key in parsed) {
+        this.setState({[key] : parsed[key]}); 
+      }
     }
   }
 
-  handleSearch(search){
-    // make the request
-    let obj = {...this.state, search}; 
-    this.makeRequest(obj); 
-    // update the state here for the search
-    this.setState({search}); 
-  }
-
-  handleSelect(val, key){
+  handleFilter(val, key){
     // make the request
     let obj = {...this.state, [key] : val}; 
     this.makeRequest(obj);
@@ -77,19 +73,29 @@ class ProductListing extends Component{
     this.setState({[key] : val});
   }
 
-  makeRequest(searchObj){
-    this.props.dispatch(searchProducts(searchObj));  
+  makeRequest(searchObj){ 
+    this.props.dispatch(searchProducts(this.props.location, searchObj));  
+  }
+
+  renderProducts(){
+    const { loading, products, error } = this.props; 
+    if(loading) return antIcon; 
+    if(error) return <div>There was an error!</div>
+    if(!products.length) return <div>No Products were found!</div>
+    else return <Products products={products}/>
   }
 
   render(){
+    let {search, color, adjective, material, page} = this.state; 
     return (
       <Fragment>
         <Layout>
         <Header className="header">
           <div style={styles.Header}>Product Listing</div>
           <Search
-            placeholder="input search text"
-            onSearch={val => this.handleSearch(val)}
+            placeholder="Input Search Text"
+            value={search ? search : null}
+            onSearch={val => this.handleFilter(val, 'search')}
             onChange={(e) => this.setState({search : e.target.value})}
             onPressEnter={e => this.handleSearch(e.target.value)}
             enterButton
@@ -105,19 +111,40 @@ class ProductListing extends Component{
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', textAlign : 'center' }}
               >
-                <Select onChange={val => this.handleSelect(val, 'color')} placeholder="Colors" style={styles.Select}>
+                <Select 
+                  onChange={val => this.handleFilter(val, 'color')} 
+                  value={color ? color : 'None'}
+                  placeholder="Colors" 
+                  style={styles.Select}
+                >
                 {colors.map(item => <Option key={item} value={item}>{item}</Option>)}
                 </Select>
-                <Select onChange={val => this.handleSelect(val, 'adjective')} placeholder="Adjective" style={styles.Select}>
+                <Select 
+                  onChange={val => this.handleFilter(val, 'adjective')} 
+                  value={adjective ? adjective : 'None'}
+                  placeholder="Adjective" 
+                  style={styles.Select}
+                >
                 {adjectives.map(item => <Option key={item} value={item}>{item}</Option>)}
                 </Select>
-                <Select onChange={val => this.handleSelect(val, 'material')} placeholder="Materials" style={styles.Select}>
+                <Select 
+                  onChange={val => this.handleFilter(val, 'material')} 
+                  value={material ? material : 'None'}
+                  placeholder="Materials" 
+                  style={styles.Select}
+                >
                 {materials.map(item => <Option key={item} value={item}>{item}</Option>)}
                 </Select>
               </Menu>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              Content
+              {this.renderProducts()}
+              <Pagination 
+              current={page ? Number(page) : 1} 
+              pageSize={10} 
+              onChange={page => this.handleFilter(page, 'page')}
+              total={this.props.products.length} 
+            />
             </Content>
           </Layout>
         </Content>
