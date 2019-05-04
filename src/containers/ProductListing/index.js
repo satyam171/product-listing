@@ -47,7 +47,7 @@ class ProductListing extends Component{
   constructor(props){
     super(props);
     this.state = {
-      search : '', color : '', adjective : '', material : '', page : 1
+      search : '', color : '', adjective : '', material : ''
     }
     this.handleFilter = this.handleFilter.bind(this);  
   }
@@ -86,7 +86,7 @@ class ProductListing extends Component{
   }
 
   render(){
-    let {search, color, adjective, material, page} = this.state; 
+    let {search, color, adjective, material} = this.state; 
     return (
       <Fragment>
         <Layout>
@@ -97,7 +97,7 @@ class ProductListing extends Component{
             value={search ? search : null}
             onSearch={val => this.handleFilter(val, 'search')}
             onChange={(e) => this.setState({search : e.target.value})}
-            onPressEnter={e => this.handleSearch(e.target.value)}
+            onPressEnter={e => this.handleFilter(e.target.value, 'search')}
             enterButton
             style={styles.Search}
           />
@@ -111,40 +111,43 @@ class ProductListing extends Component{
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', textAlign : 'center' }}
               >
-                <Select 
-                  onChange={val => this.handleFilter(val, 'color')} 
-                  value={color ? color : 'None'}
-                  placeholder="Colors" 
-                  style={styles.Select}
-                >
-                {colors.map(item => <Option key={item} value={item}>{item}</Option>)}
-                </Select>
-                <Select 
-                  onChange={val => this.handleFilter(val, 'adjective')} 
-                  value={adjective ? adjective : 'None'}
-                  placeholder="Adjective" 
-                  style={styles.Select}
-                >
-                {adjectives.map(item => <Option key={item} value={item}>{item}</Option>)}
-                </Select>
-                <Select 
-                  onChange={val => this.handleFilter(val, 'material')} 
-                  value={material ? material : 'None'}
-                  placeholder="Materials" 
-                  style={styles.Select}
-                >
-                {materials.map(item => <Option key={item} value={item}>{item}</Option>)}
-                </Select>
+                <div>
+                  <div style={styles.SelectTitle}>Colors Filter</div>
+                  <Select 
+                    onChange={val => this.handleFilter(val, 'color')} 
+                    value={color ? color : 'None'}
+                    placeholder="Colors" 
+                    style={styles.Select}
+                  >
+                  {colors.map(item => <Option key={item} value={item}>{item}</Option>)}
+                  </Select>
+                </div>
+                <div>
+                  <div style={styles.SelectTitle}>Adjectives Filter</div>
+                  <Select 
+                    onChange={val => this.handleFilter(val, 'adjective')} 
+                    value={adjective ? adjective : 'None'}
+                    placeholder="Adjective" 
+                    style={styles.Select}
+                  >
+                  {adjectives.map(item => <Option key={item} value={item}>{item}</Option>)}
+                  </Select>
+                </div>
+                <div>
+                  <div style={styles.SelectTitle}>Materials Filter</div>
+                  <Select 
+                    onChange={val => this.handleFilter(val, 'material')} 
+                    value={material ? material : 'None'}
+                    placeholder="Materials" 
+                    style={styles.Select}
+                  >
+                  {materials.map(item => <Option key={item} value={item}>{item}</Option>)}
+                  </Select>
+                </div>
               </Menu>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               {this.renderProducts()}
-              <Pagination 
-              current={page ? Number(page) : 1} 
-              pageSize={10} 
-              onChange={page => this.handleFilter(page, 'page')}
-              total={this.props.products.length} 
-            />
             </Content>
           </Layout>
         </Content>

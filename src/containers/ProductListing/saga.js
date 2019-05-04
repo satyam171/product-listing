@@ -20,7 +20,6 @@ const likeMapper = {
   color : 'color_like',
   adjective : 'productAdjective_like',
   material : 'productMaterial_like',
-  page : '_page'
 }
 
 function getQueryString(filterObj){

@@ -8,6 +8,11 @@ const styles = {
     Select : {
         width: 120, 
         marginBottom: 20
+    },
+    SelectTitle : {
+        marginBottom : '12px',
+        textAlign : 'left', 
+        marginLeft : '40px'
     }
 }
 
