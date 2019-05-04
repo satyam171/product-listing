@@ -1,0 +1,19 @@
+export const adjectives = [
+    "Refined",
+    "Handcrafted",
+    "Tasty",
+    "Incredible",
+    "Gorgeous",
+    "Unbranded",
+    "Rustic",
+    "Licensed",
+    "Sleek",
+    "Practical",
+    "Handmade",
+    "Awesome",
+    "Ergonomic",
+    "Intelligent",
+    "Small",
+    "Generic",
+    "Fantastic"
+]

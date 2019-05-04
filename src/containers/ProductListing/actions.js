@@ -4,10 +4,21 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { GET_PRODUCTS, GET_PRODUCTS_SUCCESS, GET_PRODUCTS_FAILURE } from './constants';
 
-export function defaultAction() {
+export function searchProducts() {
   return {
-    type: DEFAULT_ACTION,
+    type: GET_PRODUCTS
+  };
+}
+
+export function searchProductsSuccess() {
+  return {
+    type: GET_PRODUCTS
+  };
+}
+export function searchProductsFailure() {
+  return {
+    type: GET_PRODUCTS
   };
 }

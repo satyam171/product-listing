@@ -12,6 +12,14 @@ const selectProductListingDomain = state =>
  * Other specific selectors
  */
 
+const selectRouter = state => state.router;
+
+const makeSelectLocation = () =>
+  createSelector(
+    selectRouter,
+    routerState => routerState.location,
+  );
+
 /**
  * Default selector used by ProductListing
  */
@@ -23,4 +31,4 @@ const makeSelectProductListing = () =>
   );
 
 export default makeSelectProductListing;
-export { selectProductListingDomain };
+export { selectProductListingDomain, makeSelectLocation };

@@ -14,6 +14,9 @@ import history from './utils/history';
 // Import root app
 import App from './containers/App'; 
 
+// Importing the css for antd library
+import 'antd/dist/antd.css';
+
 import configureStore from './configureStore';
 
 // Create redux store with history
